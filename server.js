@@ -8,16 +8,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
 const mongoURI = process.env.MONGO_URI;
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(mongoURI)
 .then(() => console.log("MongoDB Connected"))
 .catch((err) => {
     console.error("MongoDB connection error:", err);
-    process.exit(1); // لو الاتصال فشل، السيرفر يقفل
+    process.exit(1);
 });
 
 // Routes
