@@ -1,14 +1,15 @@
 const mongoose = require("mongoose");
 
-const SaleSchema = new mongoose.Schema({
+const PurchaseSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true
   },
-  customer: {
+  supplier: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Customer"
+    ref: "Supplier",
+    required: true
   },
   product: {
     type: mongoose.Schema.Types.ObjectId,
@@ -23,32 +24,19 @@ const SaleSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  discount: {
-    type: Number,
-    default: 0
-  },
   totalPrice: {
     type: Number,
     required: true
   },
-  paymentMethod: {
-    type: String,
-    enum: ["Cash", "Card", "Transfer", "Other"],
-    default: "Cash"
-  },
-  paymentStatus: {
-    type: String,
-    enum: ["Paid", "Pending", "Partial"],
-    default: "Paid"
-  },
-  invoice: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Invoice"
-  },
-  soldAt: {
+  purchaseDate: {
     type: Date,
     default: Date.now
+  },
+  notes: {
+    type: String,
+    trim: true
   }
 });
 
-module.exports = mongoose.model("Sale", SaleSchema);
+module.exports = mongoose.model("Purchase", PurchaseSchema);
+
