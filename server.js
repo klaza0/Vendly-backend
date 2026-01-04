@@ -37,16 +37,24 @@ app.use("/api/activity-logs", activityLogRoutes);
 app.get("/", (req, res) => res.send("Vendly Sales API Running"));
 
 const mongoURI = process.env.MONGO_URI;
+let PORT = process.env.PORT || 5000;
+
+if (typeof PORT === 'string' && PORT === 'PORT') {
+  PORT = 5000;
+} else {
+  PORT = parseInt(PORT, 10) || 5000;
+}
 
 mongoose.connect(mongoURI)
 .then(() => {
   console.log("MongoDB Connected");
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 })
 .catch((err) => {
     console.error("MongoDB connection error:", err);
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT} (MongoDB connection failed)`);
+    });
 });
