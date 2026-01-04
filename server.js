@@ -22,6 +22,9 @@ const reportsRoutes = require("./src/routes/reports.routes");
 const activityLogRoutes = require("./src/routes/activityLog.routes");
 
 app.use("/api/auth", authRoutes);
+
+const authController = require("./src/controllers/auth.controller");
+app.post("/login", authController.login);
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/sales", saleRoutes);
@@ -35,6 +38,25 @@ app.use("/api/reports", reportsRoutes);
 app.use("/api/activity-logs", activityLogRoutes);
 
 app.get("/", (req, res) => res.send("Vendly Sales API Running"));
+
+app.get("/login", (req, res) => {
+  res.status(405).json({
+    message: "Method not allowed",
+    error: "Use POST method instead of GET",
+    correctEndpoint: "POST /api/auth/login",
+    example: {
+      url: "https://vendly-backend.onrender.com/api/auth/login",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: {
+        username: "your-username",
+        password: "your-password"
+      }
+    }
+  });
+});
 
 const mongoURI = process.env.MONGO_URI;
 let PORT = process.env.PORT || 5000;
